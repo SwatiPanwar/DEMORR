@@ -1,3 +1,28 @@
+----
+- name: updating tomcat-users.xml files
+     become: yes
+     become_users: root
+     lineinfile:
+       path: /opt/tomcat8/conf/tomcat-users.xml
+       insertbefore: '</tomcat-users>'
+       line: <user username="roboot" password="swati" roles="manager-script"/>
+       state: present
+
+   - name: updating context.xml file
+     become: yes
+     become_user: root
+     lineinfile:
+       path: /opt/tomcat8/webapps/manager/MFTA-INF/context.xml
+       regexp: allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+       line: allow="\d+\.\d+\.\d+\.\d+" />
+       state: present
+       backup: yes
+
+
+
+
+
+
 ---
 - name: Download Tomcat8 from tomcat.apache.org
   hosts: tomcat_server
